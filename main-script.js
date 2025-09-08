@@ -189,7 +189,7 @@ document.addEventListener('keydown', function (e) {
     const calculators = [
       'hbv-hcc.html',
       'early-recurrence.html',
-      'tace.html',
+      'bclc-0a-hcc-survival.html',
       'morbidity-risk.html',
       'transfusion-risk.html',
       'liver-failure.html',

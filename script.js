@@ -1,29 +1,37 @@
-// 预测模型的风险评分系数（基于临床研究数据模拟）
-const riskFactors = {
-  portalHypertension: { yes: 0.3, no: 0 },
-  macrovascularInvasion: { yes: 0.8, no: 0 },
-  afpLevel: { high: 0.4, low: 0 },
-  microvascularInvasion: { yes: 0.5, no: 0 },
-  childPugh: { B: 0.6, A: 0 },
-  resectionMargin: { narrow: 0.3, wide: 0 },
-  tumorNumber: { '1': 0, '2': 0.2, '3plus': 0.5 },
-  tumorSize: { small: 0, medium: 0.3, large: 0.7 }
+// 预测模型的线性预测器系数
+const linearPredictorCoefficients = {
+  synchronousSplenectomy: { yes: 0, no: -0.641 },
+  childPugh: { A: 0, B: 0.891 },
+  afpLevel: { low: 0, high: 0.603 },
+  tumorSize: { small: 0, large: 0.681 },
+  gender: { female: 0, male: 0.625 },
+  microvascularInvasion: { no: 0, yes: 0.865 }
 };
 
-// TACE治疗效果系数
-const taceEffectiveness = {
-  portalHypertension: { yes: 0.15, no: 0.25 },
-  macrovascularInvasion: { yes: 0.1, no: 0.3 },
-  afpLevel: { high: 0.15, low: 0.25 },
-  microvascularInvasion: { yes: 0.15, no: 0.25 },
-  childPugh: { B: 0.1, A: 0.25 },
-  resectionMargin: { narrow: 0.2, wide: 0.3 },
-  tumorNumber: { '1': 0.3, '2': 0.2, '3plus': 0.1 },
-  tumorSize: { small: 0.3, medium: 0.2, large: 0.1 }
+// 预测公式系数
+const predictionFormulas = {
+  // Expected survival time = -4.6776×LP³ + 35.1357×LP² + -93.2287×LP + 100.8345
+  survivalTime: {
+    cubic: -4.6776,
+    quadratic: 35.1357,
+    linear: -93.2287,
+    constant: 100.8345
+  },
+  // 3-years survival probability = 0.0313×LP³ + -0.1130×LP² + -0.2098×LP + 0.7873
+  survival3Year: {
+    cubic: 0.0313,
+    quadratic: -0.1130,
+    linear: -0.2098,
+    constant: 0.7873
+  },
+  // 5-years survival probability = 0.0170×LP³ + -0.0116×LP² + -0.3403×LP + 0.6411
+  survival5Year: {
+    cubic: 0.0170,
+    quadratic: -0.0116,
+    linear: -0.3403,
+    constant: 0.6411
+  }
 };
-
-// 基础生存时间（月）
-const baseSurvivalTime = 48;
 
 // 当前语言状态
 let currentLanguage = 'en'; // 默认英文
@@ -78,54 +86,49 @@ function initializeLanguage() {
   switchLanguage(savedLanguage);
 }
 
-// 计算风险评分
-function calculateRiskScore(formData) {
-  let riskScore = 0;
+// 计算线性预测器 (LP)
+function calculateLinearPredictor(formData) {
+  let lp = 0;
 
   for (const [factor, value] of Object.entries(formData)) {
-    if (riskFactors[factor] && riskFactors[factor][value] !== undefined) {
-      riskScore += riskFactors[factor][value];
+    if (linearPredictorCoefficients[factor] && linearPredictorCoefficients[factor][value] !== undefined) {
+      lp += linearPredictorCoefficients[factor][value];
     }
   }
 
-  return riskScore;
+  return Math.round(lp * 1000) / 1000; // 保留三位小数
 }
 
-// 计算TACE效果评分
-function calculateTaceEffect(formData) {
-  let taceEffect = 0;
-  let factors = 0;
+// 计算预期生存时间
+function calculateExpectedSurvivalTime(lp) {
+  const formula = predictionFormulas.survivalTime;
+  const result = formula.cubic * Math.pow(lp, 3) +
+    formula.quadratic * Math.pow(lp, 2) +
+    formula.linear * lp +
+    formula.constant;
 
-  for (const [factor, value] of Object.entries(formData)) {
-    if (taceEffectiveness[factor] && taceEffectiveness[factor][value] !== undefined) {
-      taceEffect += taceEffectiveness[factor][value];
-      factors++;
-    }
+  return Math.max(0, Math.round(result * 10) / 10); // 保留一位小数，不能为负数
+}
+
+// 计算生存概率
+function calculateSurvivalProbability(lp, years) {
+  let formula;
+  if (years === 3) {
+    formula = predictionFormulas.survival3Year;
+  } else if (years === 5) {
+    formula = predictionFormulas.survival5Year;
+  } else {
+    return 0;
   }
 
-  return factors > 0 ? taceEffect / factors : 0.2; // 平均效果
-}
+  const result = formula.cubic * Math.pow(lp, 3) +
+    formula.quadratic * Math.pow(lp, 2) +
+    formula.linear * lp +
+    formula.constant;
 
-// 计算生存时间
-function calculateSurvivalTime(riskScore, withTace = false, taceEffect = 0) {
-  // 基于风险评分调整生存时间
-  let survivalTime = baseSurvivalTime * Math.exp(-riskScore);
-
-  if (withTace) {
-    // TACE治疗效果
-    const taceMultiplier = 1 + taceEffect;
-    survivalTime = survivalTime * taceMultiplier;
-  }
-
-  return Math.round(survivalTime * 10) / 10; // 保留一位小数
-}
-
-// 计算生存率
-function calculateSurvivalRate(survivalTime, years) {
-  const months = years * 12;
-  // 使用指数衰减模型
-  const rate = Math.exp(-months / survivalTime) * 100;
-  return Math.max(0, Math.min(100, Math.round(rate * 10) / 10)); // 限制在0-100%之间
+  // 转换为百分比并限制在0-100%之间
+  const percentage = Math.max(0, Math.min(100, result * 100));
+  return Math.round(percentage * 10) / 10; // 保留一位小数
 }
 
 // 显示结果
@@ -134,17 +137,9 @@ function displayResults(results) {
   const noResultsDiv = document.getElementById('noResults');
 
   // 更新数值
-  document.getElementById('withTaceSurvival').textContent = results.withTace.survivalTime;
-  document.getElementById('withTace3Year').textContent = results.withTace.survival3Year + '%';
-  document.getElementById('withTace5Year').textContent = results.withTace.survival5Year + '%';
-
-  document.getElementById('withoutTaceSurvival').textContent = results.withoutTace.survivalTime;
-  document.getElementById('withoutTace3Year').textContent = results.withoutTace.survival3Year + '%';
-  document.getElementById('withoutTace5Year').textContent = results.withoutTace.survival5Year + '%';
-
-  document.getElementById('netBenefit').textContent = results.netBenefit.survivalTime;
-  document.getElementById('netBenefit3Year').textContent = results.netBenefit.survival3Year + '%';
-  document.getElementById('netBenefit5Year').textContent = results.netBenefit.survival5Year + '%';
+  document.getElementById('expectedSurvival').textContent = results.expectedSurvivalTime;
+  document.getElementById('survival3Year').textContent = results.survival3Year + '%';
+  document.getElementById('survival5Year').textContent = results.survival5Year + '%';
 
   // 显示结果，隐藏提示
   resultsDiv.classList.remove('hidden');
@@ -161,14 +156,12 @@ function displayResults(results) {
 // 验证表单
 function validateForm(formData) {
   const requiredFields = [
-    'portalHypertension',
-    'macrovascularInvasion',
-    'afpLevel',
-    'microvascularInvasion',
+    'synchronousSplenectomy',
     'childPugh',
-    'resectionMargin',
-    'tumorNumber',
-    'tumorSize'
+    'afpLevel',
+    'tumorSize',
+    'gender',
+    'microvascularInvasion'
   ];
 
   for (const field of requiredFields) {
@@ -221,44 +214,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 模拟计算延迟
     setTimeout(() => {
-      // 计算风险评分
-      const riskScore = calculateRiskScore(formData);
+      // 计算线性预测器
+      const lp = calculateLinearPredictor(formData);
 
-      // 计算TACE效果
-      const taceEffect = calculateTaceEffect(formData);
+      // 计算预期生存时间
+      const expectedSurvivalTime = calculateExpectedSurvivalTime(lp);
 
-      // 计算不接受TACE治疗的结果
-      const withoutTaceSurvival = calculateSurvivalTime(riskScore, false);
-      const withoutTace3Year = calculateSurvivalRate(withoutTaceSurvival, 3);
-      const withoutTace5Year = calculateSurvivalRate(withoutTaceSurvival, 5);
-
-      // 计算接受TACE治疗的结果
-      const withTaceSurvival = calculateSurvivalTime(riskScore, true, taceEffect);
-      const withTace3Year = calculateSurvivalRate(withTaceSurvival, 3);
-      const withTace5Year = calculateSurvivalRate(withTaceSurvival, 5);
-
-      // 计算净获益
-      const netBenefitSurvival = Math.round((withTaceSurvival - withoutTaceSurvival) * 10) / 10;
-      const netBenefit3Year = Math.round((withTace3Year - withoutTace3Year) * 10) / 10;
-      const netBenefit5Year = Math.round((withTace5Year - withoutTace5Year) * 10) / 10;
+      // 计算生存概率
+      const survival3Year = calculateSurvivalProbability(lp, 3);
+      const survival5Year = calculateSurvivalProbability(lp, 5);
 
       // 组织结果
       const results = {
-        withTace: {
-          survivalTime: withTaceSurvival,
-          survival3Year: withTace3Year,
-          survival5Year: withTace5Year
-        },
-        withoutTace: {
-          survivalTime: withoutTaceSurvival,
-          survival3Year: withoutTace3Year,
-          survival5Year: withoutTace5Year
-        },
-        netBenefit: {
-          survivalTime: netBenefitSurvival >= 0 ? '+' + netBenefitSurvival : netBenefitSurvival,
-          survival3Year: netBenefit3Year >= 0 ? '+' + netBenefit3Year : netBenefit3Year,
-          survival5Year: netBenefit5Year >= 0 ? '+' + netBenefit5Year : netBenefit5Year
-        }
+        linearPredictor: lp,
+        expectedSurvivalTime: expectedSurvivalTime,
+        survival3Year: survival3Year,
+        survival5Year: survival5Year
       };
 
       // 显示结果
