@@ -1,6 +1,6 @@
 // 预测模型的线性预测器系数
 const linearPredictorCoefficients = {
-  synchronousSplenectomy: { yes: 0, no: -0.641 },
+  synchronousSplenectomy: { no: 0, yes: -0.641 },
   childPugh: { A: 0, B: 0.891 },
   afpLevel: { low: 0, high: 0.603 },
   tumorSize: { small: 0, large: 0.681 },

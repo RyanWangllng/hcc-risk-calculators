@@ -11,8 +11,16 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1 data-en="Risk Calculator Website" data-zh="风险计算器网站">Risk Calculator Website</h1>
-      <p data-en="Please choose the website:" data-zh="请选择您需要的网站：">Please choose the website:</p>
+      <div class="header-content">
+        <div class="header-text">
+          <h1 data-en="Risk Calculator Website" data-zh="风险计算器网站">Risk Calculator Website</h1>
+          <p data-en="Our prediction model is currently available:" data-zh="我们的预测模型现已可用：">Our prediction model is currently
+            available:</p>
+          </div>
+          <div class="hospital-logo">
+            <img src="tongji.png" alt="Hospital Logo" />
+          </div>
+          </div>
       <div class="language-switch">
         <button class="lang-btn" onclick="switchLanguage('zh')">中文</button>
         <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
@@ -20,6 +28,8 @@
     </div>
 
     <div class="calculator-grid">
+      <!-- 暂时隐藏未开发的计算器 - 乙肝相关性肝癌风险预测 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Risk Calculator for Hepatitis B-related Hepatocellular Carcinoma" data-zh="乙肝相关性肝癌的风险预测计算器">Risk
           Calculator for Hepatitis B-related Hepatocellular Carcinoma</h3>
@@ -27,7 +37,10 @@
           data-zh="预测乙型肝炎患者发生肝细胞癌的风险">Predict the risk of hepatocellular carcinoma in patients with hepatitis B</p>
         <a href="hbv-hcc.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 暂时隐藏未开发的计算器 - 肝癌手术早期复发风险预测 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Risk Predictor for Early Recurrence of Hepatocellular Carcinoma" data-zh="肝癌手术早期复发风险预测器">Risk
           Predictor for Early Recurrence of Hepatocellular Carcinoma</h3>
@@ -35,7 +48,9 @@
           data-zh="预测肝细胞癌手术后早期复发的风险">Predict the risk of early recurrence after hepatocellular carcinoma surgery</p>
         <a href="early-recurrence.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 保留已开发完成的BCLC 0/A期肝细胞癌预测模型 -->
       <div class="calculator-card featured">
         <h3
           data-en="Prediction Model for the Overall Survival of Patients with BCLC stage 0/A Hepatocellular Carcinoma and Clinically Significant Portal Hypertension"
@@ -49,6 +64,8 @@
         <span class="featured-badge" data-en="Featured" data-zh="特色">Featured</span>
       </div>
 
+      <!-- 暂时隐藏未开发的计算器 - 肝癌手术患者发病率风险计算器 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Risk Calculators to Predict Morbidity in Patients Undergoing Liver Resection for HCC"
           data-zh="肝癌手术患者发病率风险计算器">Risk Calculators to Predict Morbidity in Patients Undergoing Liver Resection for HCC
@@ -58,7 +75,10 @@
           hepatocellular carcinoma</p>
         <a href="morbidity-risk.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 暂时隐藏未开发的计算器 - 肝癌切除术围手术期输血风险计算器 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Risk Calculator for Perioperative Blood Transfusion in Liver Resection for HCC"
           data-zh="肝癌切除术围手术期输血风险计算器">Risk Calculator for Perioperative Blood Transfusion in Liver Resection for HCC</h3>
@@ -67,7 +87,10 @@
         </p>
         <a href="transfusion-risk.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 暂时隐藏未开发的计算器 - 肝癌切除术后肝功能衰竭风险计算器 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Risk Calculator to Predict Post-hepatectomy Liver Failure for HCC" data-zh="肝癌切除术后肝功能衰竭风险计算器">Risk
           Calculator to Predict Post-hepatectomy Liver Failure for HCC</h3>
@@ -76,7 +99,10 @@
         </p>
         <a href="liver-failure.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 暂时隐藏未开发的计算器 - 肝癌患者肝切除手术后6个月内死亡率预测模型 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Prediction Model for Postoperative 6-month Mortality in HCC Patients"
           data-zh="肝癌患者肝切除手术后6个月内死亡率预测模型">Prediction Model for Postoperative 6-month Mortality in HCC Patients</h3>
@@ -85,7 +111,10 @@
           carcinoma</p>
         <a href="mortality-6m.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter Calculator</a>
       </div>
+      -->
 
+      <!-- 暂时隐藏未开发的计算器 - 乙肝患者肝癌术后发生严重并发症的风险预测计算器 -->
+      <!--
       <div class="calculator-card">
         <h3 data-en="Prediction Model of Postoperative Major Complications after Hepatectomy for HCC among CHB Patients"
           data-zh="乙肝患者肝癌术后发生严重并发症的风险预测计算器">Prediction Model of Postoperative Major Complications after Hepatectomy for
@@ -96,6 +125,7 @@
         <a href="complications-chb.html" class="calc-btn" data-en="Enter Calculator" data-zh="进入计算器">Enter
           Calculator</a>
       </div>
+      -->
     </div>
 
     <div class="footer">
