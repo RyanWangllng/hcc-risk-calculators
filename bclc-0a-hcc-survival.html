@@ -139,6 +139,18 @@
         <h2 data-en="Prediction Results" data-zh="预测结果">Prediction Results</h2>
         <div id="results" class="hidden">
           <div class="result-item">
+            <h3 data-en="Risk Assessment" data-zh="风险评估">Risk Assessment</h3>
+            <div class="result-value risk-score">
+              <span data-en="Risk Score: " data-zh="风险指数: ">Risk Score: </span>
+              <span id="riskScore">--</span>
+            </div>
+            <div class="risk-level">
+              <span data-en="Risk Level: " data-zh="风险等级: ">Risk Level: </span>
+              <strong id="riskLevel" class="risk-badge">--</strong>
+            </div>
+          </div>
+
+          <div class="result-item">
             <h3 data-en="Expected Survival Time" data-zh="预期生存时间">Expected Survival Time</h3>
             <div class="result-value survival-time">
               <span id="expectedSurvival">--</span> <span class="result-unit" data-en="months"

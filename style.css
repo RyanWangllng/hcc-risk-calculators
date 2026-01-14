@@ -406,6 +406,48 @@ body {
   font-weight: 400;
 }
 
+/* 风险评估样式 */
+.risk-score {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.risk-level {
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.risk-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 10px;
+}
+
+.risk-badge.low-risk {
+  background: linear-gradient(135deg, #d5f4e6 0%, #c8e6c9 100%);
+  color: #27ae60;
+  border: 2px solid #27ae60;
+}
+
+.risk-badge.intermediate-risk {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #f39c12;
+  border: 2px solid #f39c12;
+}
+
+.risk-badge.high-risk {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+}
+
 .survival-rates {
   display: flex;
   gap: 20px;

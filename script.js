@@ -75,6 +75,20 @@ function switchLanguage(lang) {
   // 更新HTML语言属性
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
 
+  // 更新风险等级显示（如果结果已显示）
+  const riskLevelElement = document.getElementById('riskLevel');
+  const resultsDiv = document.getElementById('results');
+  if (riskLevelElement && !resultsDiv.classList.contains('hidden')) {
+    const currentClass = riskLevelElement.className;
+    if (currentClass.includes('low-risk')) {
+      riskLevelElement.textContent = lang === 'zh' ? '低风险' : 'Low Risk';
+    } else if (currentClass.includes('intermediate-risk')) {
+      riskLevelElement.textContent = lang === 'zh' ? '中风险' : 'Intermediate Risk';
+    } else if (currentClass.includes('high-risk')) {
+      riskLevelElement.textContent = lang === 'zh' ? '高风险' : 'High Risk';
+    }
+  }
+
   // 保存语言偏好到localStorage
   localStorage.setItem('preferredLanguage', lang);
 }
@@ -131,12 +145,59 @@ function calculateSurvivalProbability(lp, years) {
   return Math.round(percentage * 10) / 10; // 保留一位小数
 }
 
+// 计算风险分级
+function calculateRiskLevel(riskScore) {
+  if (riskScore >= -0.641 && riskScore < 1.478) {
+    return {
+      level: 'low-risk',
+      labelEn: 'Low Risk',
+      labelZh: '低风险'
+    };
+  } else if (riskScore >= 1.478 && riskScore < 1.740) {
+    return {
+      level: 'intermediate-risk',
+      labelEn: 'Intermediate Risk',
+      labelZh: '中风险'
+    };
+  } else if (riskScore >= 1.740 && riskScore <= 3.665) {
+    return {
+      level: 'high-risk',
+      labelEn: 'High Risk',
+      labelZh: '高风险'
+    };
+  } else {
+    // 处理超出范围的情况
+    if (riskScore < -0.641) {
+      return {
+        level: 'low-risk',
+        labelEn: 'Low Risk',
+        labelZh: '低风险'
+      };
+    } else {
+      return {
+        level: 'high-risk',
+        labelEn: 'High Risk',
+        labelZh: '高风险'
+      };
+    }
+  }
+}
+
 // 显示结果
 function displayResults(results) {
   const resultsDiv = document.getElementById('results');
   const noResultsDiv = document.getElementById('noResults');
 
-  // 更新数值
+  // 更新风险评估
+  document.getElementById('riskScore').textContent = results.riskScore;
+  const riskLevelElement = document.getElementById('riskLevel');
+  const riskLevel = results.riskLevel;
+
+  // 设置风险等级文本和样式
+  riskLevelElement.textContent = currentLanguage === 'zh' ? riskLevel.labelZh : riskLevel.labelEn;
+  riskLevelElement.className = `risk-badge ${riskLevel.level}`;
+
+  // 更新生存数据
   document.getElementById('expectedSurvival').textContent = results.expectedSurvivalTime;
   document.getElementById('survival3Year').textContent = results.survival3Year + '%';
   document.getElementById('survival5Year').textContent = results.survival5Year + '%';
@@ -214,8 +275,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 模拟计算延迟
     setTimeout(() => {
-      // 计算线性预测器
+      // 计算线性预测器（风险指数）
       const lp = calculateLinearPredictor(formData);
+
+      // 计算风险分级
+      const riskLevel = calculateRiskLevel(lp);
 
       // 计算预期生存时间
       const expectedSurvivalTime = calculateExpectedSurvivalTime(lp);
@@ -227,6 +291,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // 组织结果
       const results = {
         linearPredictor: lp,
+        riskScore: lp,
+        riskLevel: riskLevel,
         expectedSurvivalTime: expectedSurvivalTime,
         survival3Year: survival3Year,
         survival5Year: survival5Year
