@@ -54,19 +54,6 @@ body {
   text-align: left;
 }
 
-.hospital-logo {
-  flex-shrink: 0;
-  margin-left: 20px;
-}
-
-.hospital-logo img {
-  height: 160px;
-  width: auto;
-  object-fit: contain;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px;
-}
 .header::before {
   content: '';
   position: absolute;
@@ -327,14 +314,6 @@ body {
       margin-bottom: 20px;
     }
   
-    .hospital-logo {
-      margin-left: 0;
-    }
-  
-    .hospital-logo img {
-      height: 120px;
-    }
-
   .calculator-card {
     padding: 25px;
   }
