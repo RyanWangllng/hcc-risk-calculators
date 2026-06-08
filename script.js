@@ -198,6 +198,7 @@ function displayResults(results) {
   riskLevelElement.className = `risk-badge ${riskLevel.level}`;
 
   // 更新生存数据
+  document.getElementById('expectedSurvival').textContent = results.expectedSurvivalTime;
   document.getElementById('survival3Year').textContent = results.survival3Year + '%';
   document.getElementById('survival5Year').textContent = results.survival5Year + '%';
 
@@ -280,6 +281,9 @@ document.addEventListener('DOMContentLoaded', function () {
       // 计算风险分级
       const riskLevel = calculateRiskLevel(lp);
 
+      // 计算预期生存时间
+      const expectedSurvivalTime = calculateExpectedSurvivalTime(lp);
+
       // 计算生存概率
       const survival3Year = calculateSurvivalProbability(lp, 3);
       const survival5Year = calculateSurvivalProbability(lp, 5);
@@ -289,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
         linearPredictor: lp,
         riskScore: lp,
         riskLevel: riskLevel,
+        expectedSurvivalTime: expectedSurvivalTime,
         survival3Year: survival3Year,
         survival5Year: survival5Year
       };
