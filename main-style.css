@@ -149,41 +149,16 @@ body {
   border-color: #3498db;
 }
 
-.calculator-card.featured {
-  background: linear-gradient(135deg, #fef7e7 0%, #fff9e7 100%);
-  border-color: #f39c12;
-  position: relative;
-}
-
-.calculator-card.featured:hover {
-  border-color: #e67e22;
-  transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(243, 156, 18, 0.2);
-}
-
-.featured-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #f39c12, #e67e22);
-  color: white;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  box-shadow: 0 3px 10px rgba(243, 156, 18, 0.3);
-}
-
 .calculator-card h3 {
   font-size: 20px;
   color: #2c3e50;
   margin-bottom: 15px;
   font-weight: 600;
   line-height: 1.4;
-  min-height: 60px;
+  min-height: 96px;
   display: flex;
   align-items: center;
+  overflow-wrap: anywhere;
 }
 
 .calculator-card p {
@@ -229,14 +204,6 @@ body {
 .calc-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
-}
-
-.calc-btn.featured-btn {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-}
-
-.calc-btn.featured-btn:hover {
-  box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
 }
 
 .footer {

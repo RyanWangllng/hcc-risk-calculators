@@ -190,11 +190,11 @@ document.addEventListener('keydown', function (e) {
       'hbv-hcc.html',
       'early-recurrence.html',
       'bclc-0a-hcc-survival.html',
+      'gbm-survival.html',
       'morbidity-risk.html',
       'transfusion-risk.html',
       'liver-failure.html',
-      'mortality-6m.html',
-      'complications-chb.html'
+      'mortality-6m.html'
     ];
 
     const index = parseInt(e.key) - 1;

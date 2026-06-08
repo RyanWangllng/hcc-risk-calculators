@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A Hepatocellular Carcinoma with Clinically Significant Portal Hypertension"
+    data-zh="基于GBM机器学习的BCLC 0/A期肝细胞癌合并临床显著门静脉高压患者总生存期预测模型">A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A Hepatocellular Carcinoma with Clinically Significant Portal Hypertension</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container wide-container">
+    <div class="header">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 data-en="A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A Hepatocellular Carcinoma with Clinically Significant Portal Hypertension"
+            data-zh="基于GBM机器学习的BCLC 0/A期肝细胞癌合并临床显著门静脉高压患者总生存期预测模型">A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A Hepatocellular Carcinoma with Clinically Significant Portal Hypertension</h1>
+          <p data-en="Estimate the survival benefit of patients with BCLC stage 0/A hepatocellular carcinoma and clinically significant portal hypertension following radical hepatectomy"
+            data-zh="评估BCLC 0/A期肝细胞癌合并临床显著门静脉高压患者接受根治性肝切除术后的生存获益">Estimate the survival benefit of patients with BCLC stage 0/A hepatocellular carcinoma and clinically significant portal hypertension following radical hepatectomy</p>
+        </div>
+      </div>
+      <div class="navigation-controls">
+        <a href="index.html" class="home-btn" data-en="← Back to Home" data-zh="← 返回主页">← Back to Home</a>
+        <div class="language-switch">
+          <button class="lang-btn" onclick="switchLanguage('zh')">中文</button>
+          <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content gbm-content">
+      <div class="form-section">
+        <h2 data-en="Patient Parameters" data-zh="患者参数">Patient Parameters</h2>
+        <p class="instruction" data-en="Enter raw clinical values. Continuous variables are standardized automatically before prediction."
+          data-zh="请输入原始临床数值。连续变量会在预测前自动完成标准化。">Enter raw clinical values. Continuous variables are standardized automatically before prediction.</p>
+
+        <form id="gbmCalculatorForm" class="gbm-form">
+          <div class="form-subsection">
+            <h3 data-en="Continuous Variables" data-zh="连续变量">Continuous Variables</h3>
+            <div class="numeric-grid">
+              <div class="input-field">
+                <label for="tumor_num" data-en="Tumor number" data-zh="肿瘤数目">Tumor number</label>
+                <input id="tumor_num" name="tumor_num" type="number" min="1" step="1" required>
+              </div>
+              <div class="input-field">
+                <label for="tumor_dia" data-en="Tumor size (cm)" data-zh="肿瘤大小（cm）">Tumor size (cm)</label>
+                <input id="tumor_dia" name="tumor_dia" type="number" min="0" step="0.1" required>
+              </div>
+              <div class="input-field">
+                <label for="nlr" data-en="NLR" data-zh="中性粒细胞/淋巴细胞比值">NLR</label>
+                <input id="nlr" name="nlr" type="number" min="0" step="0.01" required>
+              </div>
+              <div class="input-field">
+                <label for="glb" data-en="GLB" data-zh="球蛋白">GLB</label>
+                <input id="glb" name="glb" type="number" min="0" step="0.1" required>
+              </div>
+              <div class="input-field">
+                <label for="bun" data-en="BUN" data-zh="血尿素氮">BUN</label>
+                <input id="bun" name="bun" type="number" min="0" step="0.1" required>
+              </div>
+              <div class="input-field">
+                <label for="copy" data-en="Viral load (copies/mL)" data-zh="病毒载量（copies/mL）">Viral load (copies/mL)</label>
+                <input id="copy" name="copy" type="number" min="0" step="1" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-subsection">
+            <h3 data-en="Coded Variables" data-zh="编码变量">Coded Variables</h3>
+            <div class="compact-groups">
+              <div class="form-group">
+                <label data-en="Sex" data-zh="性别">Sex</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="sex" value="0" required><span
+                      data-en="Female" data-zh="女性">Female</span></label>
+                  <label class="radio-option"><input type="radio" name="sex" value="1"><span
+                      data-en="Male" data-zh="男性">Male</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Synchronous splenectomy" data-zh="同期脾切除术">Synchronous splenectomy</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="sgm" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                  <label class="radio-option"><input type="radio" name="sgm" value="0"><span
+                      data-en="No" data-zh="否">No</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="AFP ≥ 400 ng/mL" data-zh="甲胎蛋白 ≥ 400 ng/mL">AFP ≥ 400 ng/mL</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="afp400" value="0" required><span
+                      data-en="No" data-zh="否">No</span></label>
+                  <label class="radio-option"><input type="radio" name="afp400" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Hepatectomy method" data-zh="肝切除方法">Hepatectomy method</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="hpm" value="1"><span
+                      data-en="Non-anatomical" data-zh="非解剖性">Non-anatomical</span></label>
+                  <label class="radio-option"><input type="radio" name="hpm" value="0"><span
+                      data-en="Anatomical" data-zh="解剖性">Anatomical</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Resection margin < 1 cm" data-zh="切缘 < 1 cm">Resection margin < 1 cm</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="rm" value="0"><span
+                      data-en="No" data-zh="否">No</span></label>
+                  <label class="radio-option"><input type="radio" name="rm" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Microvascular invasion" data-zh="微血管侵犯">Microvascular invasion</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="mvi" value="0"><span
+                      data-en="No" data-zh="否">No</span></label>
+                  <label class="radio-option"><input type="radio" name="mvi" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Satellite nodules" data-zh="卫星灶">Satellite nodules</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="satellite" value="0"><span
+                      data-en="No" data-zh="无">No</span></label>
+                  <label class="radio-option"><input type="radio" name="satellite" value="1"><span
+                      data-en="Yes" data-zh="有">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Incomplete capsule" data-zh="包膜不完整">Incomplete capsule</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="cpsule" value="0"><span
+                      data-en="No" data-zh="否">No</span></label>
+                  <label class="radio-option"><input type="radio" name="cpsule" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="Postoperative liver failure" data-zh="术后肝衰竭">Postoperative liver failure</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="LF50" value="0"><span
+                      data-en="No" data-zh="否">No</span></label>
+                  <label class="radio-option"><input type="radio" name="LF50" value="1"><span
+                      data-en="Yes" data-zh="是">Yes</span></label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-en="E-S grade" data-zh="E-S分级">E-S grade</label>
+                <div class="radio-group">
+                  <label class="radio-option"><input type="radio" name="es" value="1" required><span>1</span></label>
+                  <label class="radio-option"><input type="radio" name="es" value="2"><span>2</span></label>
+                  <label class="radio-option"><input type="radio" name="es" value="3"><span>3</span></label>
+                  <label class="radio-option"><input type="radio" name="es" value="4"><span>4</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="calculate-btn" data-en="Calculate Prediction Results" data-zh="计算预测结果">Calculate Prediction Results</button>
+        </form>
+      </div>
+
+      <div class="results-section">
+        <h2 data-en="Prediction Results" data-zh="预测结果">Prediction Results</h2>
+        <div id="gbmResults" class="hidden">
+          <div class="result-item">
+            <h3 data-en="Risk Assessment" data-zh="风险评估">Risk Assessment</h3>
+            <div class="result-value risk-score">
+              <span data-en="Risk Score: " data-zh="风险分数: ">Risk Score: </span>
+              <span id="gbmRiskScore">--</span>
+            </div>
+            <div class="risk-level">
+              <span data-en="Risk Group: " data-zh="风险分组: ">Risk Group: </span>
+              <strong id="gbmRiskLevel" class="risk-badge">--</strong>
+            </div>
+          </div>
+
+          <div class="result-item">
+            <h3 data-en="Survival Probability" data-zh="生存概率">Survival Probability</h3>
+            <div class="survival-rates stacked-rates">
+              <div class="survival-rate-item">
+                <span data-en="1-year survival: " data-zh="1年生存率: ">1-year survival: </span><strong
+                  id="gbmSurvival1Year">--%</strong>
+              </div>
+              <div class="survival-rate-item">
+                <span data-en="3-year survival: " data-zh="3年生存率: ">3-year survival: </span><strong
+                  id="gbmSurvival3Year">--%</strong>
+              </div>
+              <div class="survival-rate-item">
+                <span data-en="5-year survival: " data-zh="5年生存率: ">5-year survival: </span><strong
+                  id="gbmSurvival5Year">--%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="gbmNoResults" class="no-results">
+          <p data-en="Complete the patient parameters and click calculate to view prediction results."
+            data-zh="请填写患者参数并点击计算按钮查看预测结果。">Complete the patient parameters and click calculate to view prediction results.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <h3 data-en="Important Notice" data-zh="重要提示">Important Notice</h3>
+      <p data-en="This calculator uses an exported GBM survival model and baseline survival curve for academic reference only. Predictions may differ from actual patient outcomes and must not be used as the sole basis for clinical decisions."
+        data-zh="本计算器基于导出的GBM生存模型和基线生存曲线，仅供学术参考。预测结果可能与患者实际结局不同，不应作为临床决策的唯一依据。">This calculator uses an exported GBM survival model and baseline survival curve for academic reference only. Predictions may differ from actual patient outcomes and must not be used as the sole basis for clinical decisions.</p>
+    </div>
+
+    <div class="footer">
+      <p data-en="© 2025 A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A HCC with Clinically Significant Portal Hypertension | For Academic Research Use Only"
+        data-zh="© 2025 基于GBM机器学习的BCLC 0/A期肝细胞癌合并临床显著门静脉高压患者总生存期预测模型 | 仅供学术研究使用">© 2025 A GBM-Based Machine Learning Prediction Model for Overall Survival in BCLC Stage 0/A HCC with Clinically Significant Portal Hypertension | For Academic Research Use Only</p>
+    </div>
+  </div>
+
+  <script src="model/gbm-survival-model.js"></script>
+  <script src="gbm-survival.js"></script>
+</body>
+
+</html>

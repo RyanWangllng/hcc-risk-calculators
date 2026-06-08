@@ -22,6 +22,10 @@ body {
   animation: fadeIn 0.8s ease-out;
 }
 
+.wide-container {
+  max-width: 1400px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -83,6 +87,7 @@ body {
   position: relative;
   z-index: 1;
   text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .header p {
@@ -160,6 +165,11 @@ body {
   padding: 50px 40px;
 }
 
+.gbm-content {
+  grid-template-columns: minmax(0, 1.3fr) minmax(360px, 0.7fr);
+  align-items: start;
+}
+
 .form-section,
 .results-section {
   background: #f8f9fa;
@@ -199,6 +209,66 @@ body {
 .form-group {
   margin-bottom: 25px;
   animation: slideInLeft 0.6s ease-out;
+}
+
+.form-subsection {
+  margin-bottom: 32px;
+}
+
+.form-subsection h3 {
+  color: #34495e;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+.numeric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.input-field label {
+  display: block;
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.input-field input {
+  width: 100%;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+.input-field input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.12);
+  outline: none;
+}
+
+.compact-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.compact-groups .form-group {
+  margin-bottom: 0;
+}
+
+.compact-groups .radio-option {
+  min-width: 0;
+}
+
+.stacked-rates {
+  display: grid;
+  gap: 10px;
 }
 
 @keyframes slideInLeft {
@@ -601,6 +671,15 @@ body {
     grid-template-columns: 1fr;
     gap: 30px;
     padding: 30px;
+  }
+
+  .gbm-content {
+    grid-template-columns: 1fr;
+  }
+
+  .numeric-grid,
+  .compact-groups {
+    grid-template-columns: 1fr;
   }
 
   .header h1 {
