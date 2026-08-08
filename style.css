@@ -165,7 +165,7 @@ body {
   padding: 50px 40px;
 }
 
-.gbm-content {
+.rsf-content {
   grid-template-columns: minmax(0, 1.3fr) minmax(360px, 0.7fr);
   align-items: start;
 }
@@ -673,7 +673,7 @@ body {
     padding: 30px;
   }
 
-  .gbm-content {
+  .rsf-content {
     grid-template-columns: 1fr;
   }
 

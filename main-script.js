@@ -190,7 +190,7 @@ document.addEventListener('keydown', function (e) {
       'hbv-hcc.html',
       'early-recurrence.html',
       'bclc-0a-hcc-survival.html',
-      'gbm-survival.html',
+      'rsf-survival.html',
       'morbidity-risk.html',
       'transfusion-risk.html',
       'liver-failure.html',
